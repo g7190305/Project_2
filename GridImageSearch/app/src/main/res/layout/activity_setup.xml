@@ -104,7 +104,8 @@
         android:layout_alignBottom="@+id/tvSetupColorFilter"
         android:spinnerMode="dropdown"
         android:touchscreenBlocksFocus="false"
-        android:layout_alignLeft="@+id/etSiteFilter" />
+        android:layout_alignLeft="@+id/etSiteFilter"
+        android:paddingLeft="50dp" />
 
     <Spinner
         android:layout_width="wrap_content"
@@ -117,7 +118,8 @@
         android:layout_alignParentEnd="true"
         android:spinnerMode="dropdown"
         android:layout_alignParentRight="true"
-        android:gravity="right" />
+        android:gravity="right"
+        android:paddingLeft="50dp" />
 
     <Spinner
         android:layout_width="wrap_content"
@@ -130,5 +132,7 @@
         android:layout_alignTop="@+id/tvSetupImageSize"
         android:layout_alignBottom="@+id/tvSetupImageSize"
         android:spinnerMode="dropdown"
-        android:gravity="right" />
+        android:clickable="false"
+        android:gravity="right"
+        android:paddingLeft="50dp" />
 </RelativeLayout>

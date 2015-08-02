@@ -34,7 +34,7 @@ public class SetupActivity extends AppCompatActivity {
         Spinner imageSize = (Spinner) findViewById(R.id.spImageSize);
         ArrayAdapter<CharSequence> dataAdapter = ArrayAdapter.createFromResource(this,
                 R.array.image_size, android.R.layout.simple_spinner_item);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dataAdapter.setDropDownViewResource(R.layout.spinner_item);
         imageSize.setAdapter(dataAdapter);
     }
 
