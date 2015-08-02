@@ -21,7 +21,11 @@
         <activity
             android:name=".activities.ImageDisplayActivity"
             android:label="@string/title_activity_image_display"
-            android:parentActivityName=".activities.SearchActivity">
+            android:parentActivityName=".activities.SearchActivity" >
+        </activity>
+        <activity
+            android:name=".activities.SetupActivity"
+            android:label="@string/title_activity_setup" >
         </activity>
     </application>
 

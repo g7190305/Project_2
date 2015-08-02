@@ -113,6 +113,10 @@ public class SearchActivity extends ActionBarActivity {
         return true;
     }
 
+    public void onSetupActivity() {
+        Intent i = new Intent(SearchActivity.this, SetupActivity.class);
+        startActivity(i);
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -120,6 +124,11 @@ public class SearchActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        switch(id) {
+            case R.id.action_settings:
+                onSetupActivity();
+                return true;
+        }
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
