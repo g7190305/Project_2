@@ -1,8 +1,8 @@
 package com.example.g7190305.gridimagesearch.activities;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +13,8 @@ import android.widget.GridView;
 
 import com.example.g7190305.gridimagesearch.R;
 import com.example.g7190305.gridimagesearch.adapters.imageResultsAdapter;
+import com.example.g7190305.gridimagesearch.models.EndlessScrollListener;
+import com.example.g7190305.gridimagesearch.models.SetupInfo;
 import com.example.g7190305.gridimagesearch.models.imageResult;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -30,6 +32,7 @@ public class SearchActivity extends ActionBarActivity {
     private GridView gvResults;
     private ArrayList<imageResult> imageResults;
     private imageResultsAdapter aImageResult;
+    private SetupInfo setupInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,7 @@ public class SearchActivity extends ActionBarActivity {
         imageResults = new ArrayList<imageResult>();
         aImageResult = new imageResultsAdapter(this, imageResults);
         gvResults.setAdapter(aImageResult);
+        setupInfo = new SetupInfo(null,null,null,null);
 
         gvResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -65,23 +69,63 @@ public class SearchActivity extends ActionBarActivity {
                 startActivity(i);
             }
         });
+
+        gvResults.setOnScrollListener(new EndlessScrollListener(8, 0) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to your AdapterView
+                customLoadMoreDataFromApi(page);
+                // or customLoadMoreDataFromApi(totalItemsCount);
+            }
+        });
     }
+
+    // Append more data into the adapter
+    public void customLoadMoreDataFromApi(int offset) {
+        // This method probably sends out a network request and appends new data items to your adapter.
+        // Use the offset value and add it as a parameter to your API request to retrieve paginated data.
+        // Deserialize API response and then construct new objects to append to the adapter
+        String query = etSeatch.getText().toString();
+        fetchGoogleSearchImage(query, offset*8);
+    }
+
+
     public void onImageSearch(View v) {
         String query = etSeatch.getText().toString();
+        aImageResult.clear();
         // Toast.makeText(this, "search for " + query , Toast.LENGTH_SHORT).show();
         // Log.i("DEBUG", "onImageSearch");
 
         // fetch google image info
-        fetchGoogleSearchImage(query);
+        fetchGoogleSearchImage(query, 0);
     }
 
-    public void fetchGoogleSearchImage(String query) {
+    public void fetchGoogleSearchImage(String query, int page) {
         String url = "https://ajax.googleapis.com/ajax/services/search/images";
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         params.put("q", query);
         params.put("v", "1.0");
         params.put("rsz", 8);
+
+        if (page > 0 ) {
+            params.put("start", page);
+        }
+
+        if (setupInfo.getImageType() != null) {
+            params.put("imgtype", setupInfo.getImageType());
+        }
+        if (setupInfo.getColorFilter() != null) {
+            params.put("imgcolor", setupInfo.getColorFilter());
+        }
+        if (setupInfo.getImageSize() != null) {
+            params.put("imgsz", setupInfo.getImageSize());
+        }
+        if (setupInfo.getSiteFilter() != null) {
+            params.put("as_sitesearch", setupInfo.getSiteFilter());
+        }
+
         client.get(url, params, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -90,9 +134,9 @@ public class SearchActivity extends ActionBarActivity {
                         JSONArray imageResultJSON = null;
                         try {
                             imageResultJSON = response.getJSONObject("responseData").getJSONArray("results");
-                            aImageResult.clear();
+                            // aImageResult.clear();
                             aImageResult.addAll(imageResult.fromJSONArray(imageResultJSON));
-                        } catch( JSONException e) {
+                        } catch (JSONException e) {
                             e.printStackTrace();
                         }
                         Log.i("INFO", imageResults.toString());
@@ -115,8 +159,19 @@ public class SearchActivity extends ActionBarActivity {
 
     public void onSetupActivity() {
         Intent i = new Intent(SearchActivity.this, SetupActivity.class);
-        startActivity(i);
+        i.putExtra("setupInfo", setupInfo);
+        startActivityForResult(i, 1);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // super.onActivityResult(requestCode, resultCode, data);
+        if ( resultCode == RESULT_OK && requestCode == 1 ) {
+            setupInfo = (SetupInfo) data.getSerializableExtra("setupInfo");
+            Log.i("DEBUG", setupInfo.toString());
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -130,9 +185,9 @@ public class SearchActivity extends ActionBarActivity {
                 return true;
         }
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        // if (id == R.id.action_settings) {
+        //     return true;
+        // }
 
         return super.onOptionsItemSelected(item);
     }

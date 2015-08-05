@@ -78,8 +78,13 @@
         android:layout_height="wrap_content"
         android:text="@string/setup_btn_submit"
         android:id="@+id/btnSetupSubmit"
+        android:layout_marginRight="69dp"
+        android:layout_marginEnd="69dp"
         android:layout_below="@+id/etSiteFilter"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentRight="true"
+        android:onClick="saveSetup" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -89,9 +94,9 @@
         android:layout_alignTop="@+id/tvSetupSiteFilter"
         android:layout_alignParentEnd="true"
         android:layout_alignBottom="@+id/tvSetupSiteFilter"
-        android:layout_alignLeft="@+id/btnSetupSubmit"
-        android:layout_alignStart="@+id/btnSetupSubmit"
-        android:layout_alignParentRight="true" />
+        android:layout_alignParentRight="true"
+        android:layout_alignLeft="@+id/spColorFilter"
+        android:layout_alignStart="@+id/spColorFilter" />
 
     <Spinner
         android:layout_width="wrap_content"
@@ -99,27 +104,26 @@
         android:id="@+id/spColorFilter"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignStart="@+id/etSiteFilter"
         android:layout_alignTop="@+id/tvSetupColorFilter"
         android:layout_alignBottom="@+id/tvSetupColorFilter"
         android:spinnerMode="dropdown"
         android:touchscreenBlocksFocus="false"
-        android:layout_alignLeft="@+id/etSiteFilter"
-        android:paddingLeft="50dp" />
+        android:paddingLeft="50dp"
+        android:layout_alignLeft="@+id/spImageType"
+        android:layout_alignStart="@+id/spImageType" />
 
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/spImageType"
-        android:layout_alignLeft="@+id/etSiteFilter"
-        android:layout_alignStart="@id/etSiteFilter"
         android:layout_alignTop="@+id/tvSetupImageType"
         android:layout_alignBottom="@+id/tvSetupImageType"
         android:layout_alignParentEnd="true"
         android:spinnerMode="dropdown"
         android:layout_alignParentRight="true"
         android:gravity="right"
-        android:paddingLeft="50dp" />
+        android:paddingLeft="50dp"
+        android:layout_toRightOf="@+id/tvSetupImageType" />
 
     <Spinner
         android:layout_width="wrap_content"
@@ -135,4 +139,17 @@
         android:clickable="false"
         android:gravity="right"
         android:paddingLeft="50dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:id="@+id/btnSetupCancel"
+        android:layout_alignTop="@+id/btnSetupSubmit"
+        android:layout_toLeftOf="@+id/btnSetupSubmit"
+        android:layout_toStartOf="@+id/btnSetupSubmit"
+        android:layout_marginRight="42dp"
+        android:layout_marginEnd="42dp"
+        android:singleLine="true"
+        android:onClick="cancelSetup" />
 </RelativeLayout>

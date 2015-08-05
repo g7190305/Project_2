@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="image_size">
+        <item>please select</item>
+        <item>icon</item>
         <item>small</item>
-        <item>xxlarge </item>
-        <item>huge </item>
+        <item>medium</item>
+        <item>large</item>
+        <item>xlarge</item>
+        <item>xxlarge</item>
+        <item>huge</item>
     </string-array>
 </resources>
