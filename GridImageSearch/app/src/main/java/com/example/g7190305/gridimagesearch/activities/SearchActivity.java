@@ -72,12 +72,12 @@ public class SearchActivity extends ActionBarActivity {
             }
         });
 
-        gvResults.setOnScrollListener(new EndlessScrollListener(8, 0) {
+        gvResults.setOnScrollListener(new EndlessScrollListener(5, 0) {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to your AdapterView
-                customLoadMoreDataFromApi(page);
+                customLoadMoreDataFromApi(page * 8);
                 // or customLoadMoreDataFromApi(totalItemsCount);
             }
         });
@@ -89,7 +89,7 @@ public class SearchActivity extends ActionBarActivity {
         // Use the offset value and add it as a parameter to your API request to retrieve paginated data.
         // Deserialize API response and then construct new objects to append to the adapter
         String query = etSeatch.getText().toString();
-        fetchGoogleSearchImage(query, offset*8);
+        fetchGoogleSearchImage(query, offset);
     }
 
 
@@ -137,7 +137,9 @@ public class SearchActivity extends ActionBarActivity {
                         try {
                             imageResultJSON = response.getJSONObject("responseData").getJSONArray("results");
                             // aImageResult.clear();
-                            aImageResult.addAll(imageResult.fromJSONArray(imageResultJSON));
+                            if(imageResultJSON.length() > 0 ) {
+                                aImageResult.addAll(imageResult.fromJSONArray(imageResultJSON));
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
